@@ -3,110 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- SEO Header Tags -->
-    <title>Convert Bank Statement to Tally XML in 2 Minutes | caassure Parser</title>
-    <meta name="description" content="Convert PDF bank statements from HDFC, ICICI, Kotak, and more into Tally XML or Excel in just 2 minutes. caassure provides high-accuracy OCR for accountants.">
-    
+    <title>CAassure | Precision Accounting Automation</title>
+    <meta name="description" content="Transform complex bank statements into Tally XML or Excel in seconds. High-accuracy OCR designed for modern accounting professionals.">
+    <link rel="icon" type="image/png" href="caassure-logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #5B4EF5; --text-dark: #1a1a1a; --text-muted: #555; --bg-light: #f9f9f9; }
+        :root {
+            --brand-primary: #5B4EF5;
+            --brand-dark: #1e293b;
+            --brand-secondary: #64748b;
+            --bg-main: #ffffff;
+            --bg-soft: #f8faff;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 50px rgba(91, 78, 245, 0.1);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); line-height: 1.6; background-color: #fff; overflow-x: hidden; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            color: var(--brand-dark); 
+            line-height: 1.5; 
+            background-color: var(--bg-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        nav {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .nav-inner { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+        }
+
+        .brand-logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            text-decoration: none; 
+        }
+
+        .brand-logo img { height: 32px; width: auto; }
         
-        nav { height: 80px; display: flex; align-items: center; justify-content: space-between; background: #fff; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .logo { font-size: 24px; font-weight: 800; text-decoration: none; color: var(--text-dark); }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 15px; }
-        .btn-login { padding: 8px 20px; background: var(--primary); color: #fff !important; border-radius: 6px; }
+        .brand-logo .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
 
-        .hero { padding: 80px 0 40px; text-align: center; }
-        .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.2; margin-bottom: 25px; }
-        .hero h1 span { color: var(--primary); }
-        .hero-btns { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        .btn-primary { padding: 12px 30px; background: var(--primary); color: #fff; border-radius: 6px; text-decoration: none; font-weight: 700; }
-        .btn-dark { padding: 12px 30px; background: #333; color: #fff; border-radius: 6px; text-decoration: none; font-weight: 700; }
-        .hero-img { max-width: 900px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); border: 1px solid #eee; }
+        .brand-logo .logo-text span:first-child { color: var(--brand-dark); }
+        .brand-logo .logo-text span:last-child { color: var(--brand-primary); }
+
+        .btn-ghost { 
+            text-decoration: none; 
+            color: var(--brand-dark); 
+            font-weight: 600; 
+            font-size: 15px;
+            transition: 0.2s ease;
+        }
+
+        .btn-ghost:hover { color: var(--brand-primary); }
+
+        .btn-solid {
+            padding: 10px 24px;
+            background: var(--brand-primary);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 4px 14px rgba(91, 78, 245, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-solid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 78, 245, 0.3);
+        }
+
+        /* Hero Section */
+        .hero { 
+            padding: 100px 0 60px; 
+            text-align: center;
+            background: radial-gradient(circle at top right, rgba(91, 78, 245, 0.05), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(91, 78, 245, 0.03), transparent 30%);
+        }
+
+        .hero h1 { 
+            font-size: clamp(36px, 5vw, 64px); 
+            font-weight: 800; 
+            line-height: 1.1; 
+            margin-bottom: 24px; 
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--brand-primary), #4e44d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: var(--brand-secondary);
+            max-width: 680px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+        }
+
+        .hero-img-wrap {
+            max-width: 1000px;
+            margin: 60px auto 0;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .hero-img-wrap::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: var(--brand-primary);
+            filter: blur(80px);
+            opacity: 0.08;
+            z-index: -1;
+        }
+
+        .hero-img {
+            background: #fff;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
         .hero-img img { width: 100%; display: block; }
+        .hero-img:hover { transform: scale(1.01) translateY(-10px); }
 
-        .section-header { text-align: center; padding: 60px 0 40px; }
-        .section-header h2 { font-size: 32px; font-weight: 800; margin-bottom: 15px; display: inline-block; border-bottom: 4px solid var(--primary); padding-bottom: 10px; }
-        .section-header p { color: var(--text-muted); font-size: 17px; max-width: 750px; margin: 10px auto; }
+        /* Trusted By Section */
+        .trusted { padding: 40px 0; border-bottom: 1px solid #f1f5f9; text-align: center; }
+        .trusted-label { font-size: 13px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 30px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 40px; filter: grayscale(1); opacity: 0.6; }
 
-        .features { display: grid; grid-template-columns: repeat(6, 1fr); gap: 15px; text-align: center; padding-bottom: 60px; }
-        .icon { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; margin: 0 auto 15px; transition: 0.3s; }
-        .icon:hover { transform: scale(1.05); }
-        .feature-item span { font-weight: 700; font-size: 14px; }
+        /* Benefits Section */
+        .section-wrap { padding: 100px 0; }
+        .section-head { text-align: center; margin-bottom: 60px; }
+        .section-head h2 { font-size: 36px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+        .section-head p { color: var(--brand-secondary); font-size: 17px; max-width: 600px; margin: 0 auto; }
 
-        .process-step { display: flex; align-items: center; gap: 60px; margin-bottom: 80px; }
-        .process-step:nth-child(even) { flex-direction: row-reverse; }
-        .process-info { flex: 1; }
-        .process-info h3 { font-size: 26px; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
-        .visual { flex: 1; background: #fff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; border: 1px solid #f0f0f0; overflow: hidden; }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
 
-        footer { padding: 40px 0; text-align: center; border-top: 1px solid #eee; color: #777; font-size: 14px; }
+        .benefit-card {
+            padding: 40px;
+            background: #fff;
+            border-radius: var(--radius-md);
+            border: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--brand-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--bg-soft);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .benefit-icon img { width: 32px; height: 32px; }
+        .benefit-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+        .benefit-card p { color: var(--brand-secondary); font-size: 15px; line-height: 1.6; }
+
+        /* Workflow Section */
+        .workflow { background: var(--bg-soft); padding: 100px 0; border-radius: 40px; margin: 0 20px; }
+        
+        .step-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 80px; 
+            margin-bottom: 100px; 
+        }
+        .step-row:last-child { margin-bottom: 0; }
+        .step-row:nth-child(even) { flex-direction: row-reverse; }
+
+        .step-content { flex: 1; }
+        .step-label { 
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(91, 78, 245, 0.1);
+            color: var(--brand-primary);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .step-content h3 { font-size: 32px; font-weight: 800; margin-bottom: 20px; }
+        .step-content p { font-size: 17px; color: var(--brand-secondary); margin-bottom: 30px; }
+
+        .step-visual { 
+            flex: 1.2; 
+            background: #fff; 
+            border-radius: var(--radius-lg); 
+            box-shadow: var(--shadow-md); 
+            overflow: hidden; 
+            border: 4px solid #fff;
+        }
+        .step-visual img { width: 100%; display: block; }
+
+        /* CTA Section */
+        .cta { padding: 120px 0; text-align: center; }
+        .cta-inner {
+            background: var(--brand-dark);
+            padding: 80px 40px;
+            border-radius: 32px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta h2 { font-size: 40px; font-weight: 800; margin-bottom: 20px; }
+        .cta p { font-size: 18px; opacity: 0.8; margin-bottom: 40px; }
+
+        footer { 
+            padding: 60px 0 40px; 
+            border-top: 1px solid #f1f5f9; 
+            color: var(--brand-secondary); 
+            font-size: 14px; 
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         @media (max-width: 900px) {
-            .hero h1 { font-size: 32px; } .features { grid-template-columns: repeat(3, 1fr); }
-            .process-step { flex-direction: column !important; text-align: center; }
+            .nav-inner { justify-content: center; }
+            .nav-links { display: none; }
+            .hero { padding: 60px 0; }
+            .step-row { flex-direction: column !important; gap: 40px; text-align: center; }
+            .workflow { border-radius: 0; margin: 0; }
+            .cta h2 { font-size: 30px; }
+            .footer-inner { flex-direction: column; gap: 20px; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(91, 78, 245, 0.4); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(91, 78, 245, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(91, 78, 245, 0); }
         }
     </style>
 </head>
 <body>
     <nav>
-        <div class="container" style="display: flex; justify-content: space-between; width: 100%;">
-            <a href="#" class="logo">CA<span>assure</span></a>
+        <div class="container nav-inner">
+            <a href="#" class="brand-logo">
+                <img src="caassure-logo.png" alt="CAassure">
+                <div class="logo-text"><span>CA</span><span>assure</span></div>
+            </a>
             <div class="nav-links">
-                <!-- <a href="#">Contact</a> -->
-                <a href="https://caassure-app.quantumcusp.co" target="_blank" class="btn-login">Login</a>
+                <a href="https://caassure-app.quantumcusp.co" target="_blank" class="btn-solid">Sign In</a>
             </div>
         </div>
     </nav>
 
     <header class="hero">
         <div class="container">
-            <h1>Convert Bank Statement into <span>Tally XML</span><br>In just 2 minutes !</h1>
+            <h1>Say Goodbye to<br>Manual <span>Data Entry.</span></h1>
+            <p>Effortlessly extract tables from any bank statement. Clean, accurate, and ready for Tally or Excel in a heartbeat.</p>
+            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 12px; margin-bottom: 32px; color: #065f46; font-size: 15px; font-weight: 500;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span><strong>Privacy First:</strong> Your bank data is processed in real-time and never stored on our systems.</span>
+            </div>
+            <br/>
+            <div style="display: inline-flex; align-items: center; padding: 10px 24px; background: rgba(91, 78, 245, 0.08); border-radius: 100px; color: var(--brand-primary); margin-bottom: 40px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid rgba(91, 78, 245, 0.15); box-shadow: 0 4px 20px rgba(91, 78, 245, 0.05);">
+                <span style="display: inline-block; width: 8px; height: 8px; background: var(--brand-primary); border-radius: 50%; margin-right: 12px; animation: pulse 2s infinite;"></span>
+                Bank Statement to XML and CSV
+            </div>
             <div class="hero-btns">
-                <a href="https://caassure-app.quantumcusp.co" target="_blank" class="btn-primary">Start Free</a>
-                <!-- <a href="#" class="btn-dark">Request a Demo</a> -->
+                <a href="https://caassure-app.quantumcusp.co" target="_blank" class="btn-solid" style="padding: 16px 40px; font-size: 17px;">Start Processing Free</a>
             </div>  
-            <div class="hero-img"><img src="DemonstartionImage.png" alt="caassure Platform"></div>
+            <div class="hero-img-wrap">
+                <div class="hero-img">
+                    <img src="DemonstartionImage.png" alt="CAassure Dashboard Preview">
+                </div>
+            </div>
         </div>
     </header>
 
-    <section id="why" class="container">
-        <div class="section-header">
-            <h2>Why caassure?</h2>
-            <p>caassure provides all accounting professionals with fast, reliable parsing reports, boosting efficiency up to 10x without any manual effort.</p>
-        </div>
-        <div class="features">
-            <div class="feature-item"><div class="icon" style="background: rgba(91, 78, 245, 0.1);"><img src="1.png" alt="Time Saving" style="width: 70%; height: 70%; object-fit: contain;"></div><span>Time Saving</span></div>
-            <div class="feature-item"><div class="icon" style="background: rgba(255,165,0,0.1);"><img src="2.png" alt="Increase Productivity" style="width: 70%; height: 70%; object-fit: contain;"></div><span>Increase Productivity</span></div>
-            <div class="feature-item"><div class="icon" style="background: rgba(255,0,0,0.1);"><img src="3.png" alt="Easy Accounting" style="width: 70%; height: 70%; object-fit: contain;"></div><span>Easy Accounting</span></div>
-            <div class="feature-item"><div class="icon" style="background: rgba(91, 78, 245, 0.1);"><img src="4.png" alt="Accurate" style="width: 70%; height: 70%; object-fit: contain;"></div><span>Accurate</span></div>
-            <div class="feature-item"><div class="icon" style="background: rgba(0,128,0,0.1);"><img src="5.png" alt="User Friendly" style="width: 70%; height: 70%; object-fit: contain;"></div><span>User Friendly</span></div>
-            <div class="feature-item"><div class="icon" style="background: rgba(91, 78, 245, 0.1);"><img src="6.png" alt="Reliable" style="width: 70%; height: 70%; object-fit: contain;"></div><span>Reliable</span></div>
-        </div>
-    </section>
-
-    <section id="process" class="container">
-        <div class="section-header"><h2>Working Process</h2></div>
-        <div class="process-step">
-            <div class="process-info"><h3>Upload</h3><p>Upload your bank statement PDF. We support password-protected files with a seamless flow.</p></div>
-            <div class="visual"><img src="Upload.png" alt="Upload Bank Statement" style="width: 100%; height: auto; display: block;"></div>
-        </div>
-        <div class="process-step">
-            <div class="process-info"><h3>View & Edit</h3><p>Instantly review extracted transactions in a clear, readable format. Edit details if necessary to ensure 100% data integrity.</p></div>
-            <div class="visual"><img src="ViewEdit.png" alt="View and Edit Transactions" style="width: 100%; height: auto; display: block;"></div>
-        </div>
-        <div class="process-step">
-            <div class="process-info"><h3>Generate Report</h3><p>Export your data into Tally XML, Excel (XLSX), or JSON. Our formats are designed for immediate import into accounting software.</p></div>
-            <div class="visual"><img src="GenerateReport.png" alt="Generate Accounting Reports" style="width: 100%; height: auto; display: block;"></div>
+    <section class="section-wrap">
+        <div class="container">
+            <div class="section-head">
+                <h2>Designed for Clarity</h2>
+                <p>We've built tools that accountants actually enjoy using. Fast, reliable, and surprisingly simple.</p>
+            </div>
+            <div class="card-grid">
+                <div class="benefit-card">
+                    <h3>Immediate Turnaround</h3>
+                    <p>Stop waiting days for data entry. Upload and export transactions in under 2 minutes with surgical precision.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Perfect Data Sync</h3>
+                    <p>Our intelligent parser identifies dates, remarks, and balances with 99.9% accuracy, ensuring your books always match.</p>
+                </div>
+                <div class="benefit-card">
+                    <h3>Intuitive Workflow</h3>
+                    <p>No training required. A interface designed around your existing process—from upload to final accounting entry.</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <footer><div class="container"><p>&copy; 2026 caassure. Precision Accounting Automation</p></div></footer>
+    <section class="workflow">
+        <div class="container">
+            <div class="section-head">
+                <h2>How it Works</h2>
+                <p>Simple, powerful, and built for scale.</p>
+            </div>
+
+            <div class="step-row">
+                <div class="step-content">
+                    <span class="step-label">Step 01</span>
+                    <h3>Secure Upload</h3>
+                    <p>Drop your bank statement PDF. We handle all major formats (HDFC, ICICI, Kotak, SBI, etc.) and password-protected files with ease.</p>
+                </div>
+                <div class="step-visual">
+                    <img src="Upload.png" alt="Upload Step">
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-content">
+                    <span class="step-label">Step 02</span>
+                    <h3>Intelligent Review</h3>
+                    <p>Verify extracted data in a clean, tabular view. Tweak any edge cases instantly to maintain 100% data integrity before export.</p>
+                </div>
+                <div class="step-visual">
+                    <img src="ViewEdit.png" alt="Review Step">
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-content">
+                    <span class="step-label">Step 03</span>
+                    <h3>One-Click Export</h3>
+                    <p>Download your data perfectly formatted for Tally XML, Excel, or JSON. Import directly into your accounting stack without touching a single key.</p>
+                </div>
+                <div class="step-visual">
+                    <img src="GenerateReport.png" alt="Export Step">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <div class="cta-inner">
+                <h2>Ready to save time?</h2>
+                <p>Join hundreds of accountants automating their statement processing with CAassure.</p>
+                <a href="https://caassure-app.quantumcusp.co" target="_blank" class="btn-solid" style="background: #fff; color: var(--brand-primary); padding: 16px 40px;">Get Started Free</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-inner">
+            <div class="brand-logo" style="opacity: 0.6">
+                <img src="caassure-logo.png" alt="Logo">
+                <div class="logo-text" style="font-size: 18px;"><span>CA</span><span>assure</span></div>
+            </div>
+            <div style="text-align: right;">
+                <p>&copy; <span id="current-year"></span> CAassure. All rights reserved by <a href="https://quantumcusp.co" target="_blank" style="color: var(--brand-dark); font-weight: 600; text-decoration: none;">quantumcusp.co</a></p>
+                
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
